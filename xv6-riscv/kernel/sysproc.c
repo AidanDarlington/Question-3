@@ -96,8 +96,11 @@ sys_uptime(void)
   return xticks;
 }
 
+// Aidan Darlington
+// Student ID: 21134427
+// Calls the ps function
 uint64
-sys_ps(void)
+sys_ps(int num)
 {
-  return ps();
+  return ps(num);
 }

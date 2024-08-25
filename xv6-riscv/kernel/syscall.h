@@ -20,4 +20,7 @@
 #define SYS_link   19
 #define SYS_mkdir  20
 #define SYS_close  21
+// Aidan Darlington
+// StudentID: 21134427
+// Added definition for sys_ps
 #define SYS_ps     22

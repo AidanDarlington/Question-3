@@ -104,6 +104,9 @@ extern uint64 sys_unlink(void);
 extern uint64 sys_wait(void);
 extern uint64 sys_write(void);
 extern uint64 sys_uptime(void);
+// Aidan Darlington
+// 21134427
+// Added the extern for sys_ps
 extern uint64 sys_ps(void);
 
 static uint64 (*syscalls[])(void) = {
@@ -128,6 +131,9 @@ static uint64 (*syscalls[])(void) = {
 [SYS_link]    sys_link,
 [SYS_mkdir]   sys_mkdir,
 [SYS_close]   sys_close,
+// Aidan Darlington
+// StudentID: 21134427
+// Added the syscall for sys_ps
 [SYS_ps]      sys_ps,
 };
 

@@ -23,7 +23,10 @@ int getpid(void);
 char* sbrk(int);
 int sleep(int);
 int uptime(void);
-int ps(void);
+// Aidan Darlington
+// StudentID: 21134427
+// Added system call
+int ps(int);
 
 // ulib.c
 int stat(const char*, struct stat*);

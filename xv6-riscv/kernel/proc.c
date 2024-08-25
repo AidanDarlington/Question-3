@@ -655,42 +655,42 @@ procdump(void)
   }
 }
 
+// Aidan Darlington
+// StudentID: 21134427
+// Function to check what processes are running and prints them out
 int
-ps(void)
+ps(int onlyrunning)
 {
   struct proc *p;
 
+  // Loop through the process table
   for(p = proc; p < &proc[NPROC]; p++){
-    if(p->state == SLEEPING){
+    if(p->state == RUNNING || (!onlyrunning && p->state == SLEEPING)){
+      // Determine the state as a string
+      const char *state = "";
+      if(p->state == RUNNING) {
+	state = "running";
+      } else if(p->state == SLEEPING) {
+	state = "sleep";
+      } else if(p->state == RUNNABLE) {
+	state = "runnable";
+      } else if(p->state == ZOMBIE) {
+	state = "zombie";
+      } else {
+	continue; // Skip other states
+      }
+
+      // If onlyrunning is true, skip non running processes
+      if (onlyrunning && p->state != RUNNING) {
+	continue;
+      }
+
+      // Print process information
       if(p->pid == 1){
-        printf("%d 0 sleep %s %d\n", p->pid, p->name, p->sz);
+        printf("%d 0 %s %s %d\n", p->pid, state, p->name, p->sz);
       }
       else{
-        printf("%d %d sleep %s %d\n", p->pid, p->parent->pid, p->name, p->sz);
-      }
-    }
-    else if(p->state == RUNNING){
-      if(p->pid == 1){
-        printf("%d 0 running %s %d\n", p->pid, p->name, p->sz);
-      }
-      else{
-        printf("%d %d running %s %d\n", p->pid, p->parent->pid, p->name, p->sz);
-      }
-    }
-    else if(p->state == RUNNABLE){
-      if(p->pid == 1){
-        printf("%d 0 runnable %s %d\n", p->pid, p->name, p->sz);
-      }
-      else{
-        printf("%d %d runnable %s %d\n", p->pid, p->parent->pid, p->name, p->sz);
-      }
-    }
-    else if(p->state == ZOMBIE){
-      if(p->pid == 1){
-        printf("%d 0 zombie %s %d\n", p->pid, p->name, p->sz);
-      }
-      else{
-        printf("%d %d zombie %s %d\n", p->pid, p->parent->pid, p->name, p->sz);
+        printf("%d %d %s %s %d\n", p->pid, p->parent->pid, state, p->name, p->sz);
       }
     }
   }
