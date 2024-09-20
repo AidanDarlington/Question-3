@@ -97,10 +97,48 @@ sys_uptime(void)
 }
 
 // Aidan Darlington
-// Student ID: 21134427
-// Calls the ps function
-uint64
-sys_ps(int num)
+// StudentID: 21134427
+// Creating pageAccess function
+int
+sys_pageAccess(void)
 {
-  return ps(num);
+    // Get the three function arguments from the pageAccess() system call
+    uint64 usrpage_ptr;  // First argument - pointer to user space address
+    int npages;          // Second argument - the number of pages to examine
+    uint64 usraddr;      // Third argument - pointer to the bitmap
+
+    // Retrieve the arguments passed from the user program
+    if (argaddr(0, &usrpage_ptr) < 0 || argint(1, &npages) < 0 || argaddr(2, &usraddr) < 0)
+	return -1;
+
+    // Validate the number of pages (npages cannot exceed 64)
+    if (npages > 64)
+	return -1;
+
+    struct proc *p = myproc(); // Get current process
+    uint64 bitmap = 0; // Initialize the bitmap to 0
+    uint64 va_start = usrpage_ptr; // Start virtual address
+
+    // Iterate through the pages and check if they have been accessed
+    for (int i = 0; i < npages; i++) {
+	uint64 page_addr = va_start + i * PGSIZE; // Virtual address of current page
+	uint64 pa = walkaddr(p->pagetable, page_addr); // Get the physical address
+
+	if (pa == 0) {
+	    return -1; // Invalid page address
+	}
+
+	pte_t* pte = (pte_t*)(pa & ~0xFFF); // Get page table entry (PTE)
+
+	// Check if the page has been accessed
+	if (*pte & (PTE_R | PTE_W)) {
+	    bitmap |= (1 << i); // Set the corresponding bit in the bitmap
+	}
+    }
+
+    // Copy the bitmap to user space before returning
+    if (copyout(p->pagetable, usraddr, (char*)&bitmap, sizeof(bitmap)) < 0)
+	return -1;
+
+    return 0; // Return success
 }

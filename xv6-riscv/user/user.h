@@ -26,7 +26,7 @@ int uptime(void);
 // Aidan Darlington
 // StudentID: 21134427
 // Added system call
-int ps(int);
+int pageAccess(char* buf, unsigned int npages, unsigned int* bmp);
 
 // ulib.c
 int stat(const char*, struct stat*);

@@ -38,5 +38,5 @@ entry("sleep");
 entry("uptime");
 # Aidan Darlington
 # StudentID: 21134427
-# Added entry for ps
-entry("ps");
+# Added entry for pageAccess
+entry("pageAccess");

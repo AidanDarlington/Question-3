@@ -22,5 +22,5 @@
 #define SYS_close  21
 // Aidan Darlington
 // StudentID: 21134427
-// Added definition for sys_ps
-#define SYS_ps     22
+// Added definition for sys_pageAccess
+#define SYS_pageAccess 22
